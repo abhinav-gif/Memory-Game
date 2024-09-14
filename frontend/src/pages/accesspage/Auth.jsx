@@ -22,7 +22,7 @@ const Auth = () => {
     e.preventDefault();
     try {
       if (isUser === "login") {
-        const res = await axios.post("http://localhost:5000/api/login", {
+        const res = await axios.post("https://memory-game-shram.vercel.app/api/login", {
           email: formData.email,
           password: formData.password,
         });
@@ -35,7 +35,7 @@ const Auth = () => {
           alert("Passwords do not match");
           return;
         }
-        const res = await axios.post("http://localhost:5000/api/signup", {
+        const res = await axios.post("https://memory-game-shram.vercel.app/api/signup", {
           name: formData.name,
           email: formData.email,
           password: formData.password,
