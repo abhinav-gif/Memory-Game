@@ -82,7 +82,7 @@ app.get('/leaderboard', async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.json("Hello");
+    res.send("Hello");
 })
 // Start server
 app.listen(5000, () => {
