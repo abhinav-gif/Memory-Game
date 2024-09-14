@@ -1,0 +1,8 @@
+1)Add two modes Endless (have different sets of images and keep counting total time and score) optional 
+2) +10 -5 score (maintain high score) pro  timer,EASY timer no negative,Endless total turns no timer (not for highscore)
+3) add logic for game mode in memory game jsx
+
+-----
+1) highlight card  if matched
+
+handle signup in auth
