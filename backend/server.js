@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.json());
 app.use(cors( {
-        origin: ["https://deploy-mern-frontend.vercel.app"],
+        origin: [""],
         methods: ["POST", "GET"],
         credentials: true
     }));
@@ -85,7 +85,9 @@ app.get('/leaderboard', async (req, res) => {
     }
 });
 
-
+app.get("/", (req, res) => {
+    res.json("Hello");
+})
 // Start server
 app.listen(5000, () => {
     console.log('Server running on http://localhost:5000');
