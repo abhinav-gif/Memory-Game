@@ -5,7 +5,13 @@ const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin: ["https://memory-game-sooty-ten.vercel.app/"],
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://17122000abhinav:1234@cluster0.qm6a1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
