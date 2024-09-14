@@ -5,11 +5,7 @@ const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.json());
-app.use(cors( {
-        origin: [""],
-        methods: ["POST", "GET"],
-        credentials: true
-    }));
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://17122000abhinav:1234@cluster0.qm6a1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
