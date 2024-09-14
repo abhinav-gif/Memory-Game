@@ -1,9 +1,14 @@
 {
     "version":2,
+    "build":{
+        "env":{
+            "NODE_ENV": "prod"
+        }
+    },
     "routes": [
         {
-          "src": "/(.*)",
+          "src": "/.*",
           "dest": "index.js"
         }
     ]
-  
+}
