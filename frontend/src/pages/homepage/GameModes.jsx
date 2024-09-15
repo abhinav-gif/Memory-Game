@@ -34,9 +34,9 @@ const GameModes = () => {
           </button>
           <button
             className="btn"
-            onClick={() => handleGameModeClick("endless")}
+            onClick={() => handleGameModeClick("prodigy")}
           >
-            Endless
+            Prodigy
           </button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiEndpoint } from "../../App";
+import Confetti from "react-confetti";
 import "../../styles/MemoryGame.css";
 
 // Import images
@@ -63,6 +64,7 @@ const MemoryGame = () => {
   const [countSelected, setCountSelected] = useState(0);
   const [score, setScore] = useState(0);
   const [hiscore, setHiScore] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const [timer, setTimer] = useState(60);
 
@@ -132,6 +134,8 @@ const MemoryGame = () => {
           if (res.data.flag) {
             setHiScore(scoreRef.current);
             setTimer("Congratulations!!!");
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 5000);
           }
         } catch (error) {
           console.error("Error updating Hi Score", error);
@@ -189,27 +193,22 @@ const MemoryGame = () => {
         setCards(updated_cards);
         setCountSelected(0);
         setMatchValue({ originIndx: -1, prevFlippedIndx: -1 });
+        if (mode === "pro") {
+          if (score - 5 >= 0) {
+            setScore(score - 5);
+          } else {
+            setScore(0);
+          }
+        } else if (mode === "prodigy") {
+          if (score - 10 >= 0) {
+            setScore(score - 10);
+          } else {
+            setScore(0);
+          }
+        }
       }, 1000);
     }
   };
-
-  // Handle end of game
-  // const handleEndGame = async (message) => {
-  //   setTimer(message);
-  //   setGameStarted(false);
-
-  //   // Send score to server
-  //   try {
-  //     const userId = "66e587c7f232b6ac2e271f50";
-  //     const response = axios.patch(`/api/user/${userId}/highscore`, {
-  //       highScore: score,
-  //     });
-  //     const result = await response.json();
-  //     console.log(result);
-  //   } catch (error) {
-  //     console.error("Error updating high score:", error);
-  //   }
-  // };
 
   const handleStartGame = () => {
     const pairs = generate_pairs();
@@ -229,6 +228,7 @@ const MemoryGame = () => {
 
   return (
     <div className="game">
+      {showConfetti && <Confetti />}
       <div className="button-row">
         <button onClick={() => navigate(`/`)}>Main Menu</button>
         <img src={gameIcon} alt="game icon" />
