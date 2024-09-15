@@ -1,8 +1,8 @@
 ### `Steps to Run Locally`
 
-### `git clone this repository`
+### `1 - git clone this repository`
 
-### `Run Frontend`
+### `2 - Run Frontend`
 1) navigate to frontend folder
 2) run npm install in terminal
    This command installs all the necessary modules for frontend.
@@ -13,7 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.
 
-### `Run Backend`
+### `3 - Run Backend`
 1) navigate to backend folder
 2) run npm install in terminal
    This command installs all the necessary modules for backend.
@@ -23,7 +23,7 @@ Listens to the server at [http://localhost:5000](http://localhost:5000).
 
 Nodemon restarts the server when you make changes.
 
-### `Configuring Required ApiEndpoint and MongoDb connection string`
+### `4 - Configuring Required ApiEndpoint and MongoDb connection string`
 
 1) Navigate to frontend/src/App.jsx
 2) Configure the ApiEndpoint variable (place your server url [http://localhost:5000](http://localhost:5000) in this Example)
