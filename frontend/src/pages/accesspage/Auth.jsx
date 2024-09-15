@@ -2,6 +2,7 @@ import "../../styles/Authpage.css";
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiEndpoint } from "../../App";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -22,20 +23,20 @@ const Auth = () => {
     e.preventDefault();
     try {
       if (isUser === "login") {
-        const res = await axios.post("https://memory-game-shram.vercel.app/api/login", {
+        const res = await axios.post(`${apiEndpoint}/api/login`, {
           email: formData.email,
           password: formData.password,
         });
         const username = res.data.user.name;
-
+        const id = res.data.user._id;
         // Pass the username as state when navigating
-        navigate("/", { state: { username: username } });
+        navigate("/", { state: { username: username, id: id } });
       } else {
         if (formData.password !== formData.confirmPassword) {
           alert("Passwords do not match");
           return;
         }
-        const res = await axios.post("https://memory-game-shram.vercel.app/api/signup", {
+        const res = await axios.post(`${apiEndpoint}/api/signup`, {
           name: formData.name,
           email: formData.email,
           password: formData.password,
