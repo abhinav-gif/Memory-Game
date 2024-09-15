@@ -7,11 +7,13 @@ function LoginSignUp() {
     if (user === "logout") {
       setIsUser(false);
     } else {
+      // send login/signup info to auth page
       navigate(`/authentication/${user}`);
     }
   };
 
   const location = useLocation();
+  // access the state sent by Auth.jsx
   const username = location.state?.username;
   const [isUser, setIsUser] = useState(false);
 

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/Leaderboard.css";
+import { apiEndpoint } from "../../App";
 
 const Leaderboard = () => {
-  
   const [topUsers, setTopUsers] = useState([]);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await axios.get("https://memory-game-shram.vercel.app/leaderboard");
+        const res = await axios.get(`${apiEndpoint}/leaderboard`);
         setTopUsers(res.data);
       } catch (error) {
         console.error("Error fetching leaderboard:", error);

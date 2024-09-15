@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { apiEndpoint } from "../../App";
 import "../../styles/MemoryGame.css";
 
 // Import images
@@ -13,7 +15,6 @@ import cover from "../../assets/cover.jpg";
 import gameIcon from "../../assets/game_icon.jpg";
 
 import Scores from "./Scores";
-import axios from "axios";
 
 let images = [apple, avacado, banana, pineapple, pomegranate, watermelon]; // Add images
 const generate_pairs = () => {
@@ -48,7 +49,7 @@ const shuffled_arr = shuffleArray(pairs);
 
 const MemoryGame = () => {
   // route param
-  const { mode } = useParams();
+  const { mode, id } = useParams();
 
   // use states
   const [cards, setCards] = useState(shuffled_arr);
@@ -61,7 +62,27 @@ const MemoryGame = () => {
   const [flashed, setFlashed] = useState(false);
   const [countSelected, setCountSelected] = useState(0);
   const [score, setScore] = useState(0);
+  const [hiscore, setHiScore] = useState(0);
+
   const [timer, setTimer] = useState(60);
+
+  const scoreRef = useRef(score);
+  const idRef = useRef(id);
+
+  // fetch high score
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await axios.get(`${apiEndpoint}/hiscore`, {
+          params: { id: idRef.current },
+        });
+        setHiScore(res.data);
+      } catch (error) {
+        console.error("Error fetching Hi Score:", error);
+      }
+    };
+    fetchLeaderboard();
+  }, []);
 
   // set timer for the game
   useEffect(() => {
@@ -80,6 +101,12 @@ const MemoryGame = () => {
     }
   }, [gameStarted, timer, flashed]);
 
+  // update refrence variables
+  useEffect(() => {
+    scoreRef.current = score;
+    idRef.current = id;
+  }, [score, id]);
+
   // Flash cards at start
   useEffect(() => {
     if (gameStarted) {
@@ -96,8 +123,24 @@ const MemoryGame = () => {
       return () => clearTimeout(timer);
     } else {
       setFlashed(false);
+      const updateHiscore = async () => {
+        try {
+          const res = await axios.patch(`${apiEndpoint}/hiscore`, {
+            id: idRef.current,
+            score: scoreRef.current,
+          });
+          if (res.data.flag) {
+            setHiScore(scoreRef.current);
+            setTimer("Congratulations!!!");
+          }
+        } catch (error) {
+          console.error("Error updating Hi Score", error);
+        }
+      };
+      updateHiscore();
     }
   }, [gameStarted]);
+  // using ref variables to prevent rendering on every score change
 
   // img is used as a unique identifier to match cards
   const handleCardClick = (index, img) => {
@@ -192,7 +235,7 @@ const MemoryGame = () => {
         {!gameStarted && <button onClick={handleStartGame}>Start Game</button>}
         {gameStarted && <button onClick={handleQuitGame}>Quit Game</button>}
       </div>
-      <Scores score={score} timer={timer} />
+      <Scores score={score} timer={timer} hiscore={hiscore} />
       <div className="grid">
         {cards.map((card, index) => (
           <div

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Scores = ({ score, timer }) => {
+const Scores = ({ score, timer, hiscore }) => {
   return (
     <div className="game-info">
       <p className="score-info">Score: {score}</p>
@@ -9,7 +9,7 @@ const Scores = ({ score, timer }) => {
       ) : (
         <p className="timer-info">Time Left: {timer}s</p>
       )}
-      <p className="hi-score-info">Hi-Score: {score}</p>
+      <p className="hi-score-info">Hi-Score: {hiscore}</p>
     </div>
   );
 };
