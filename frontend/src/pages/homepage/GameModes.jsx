@@ -1,13 +1,16 @@
 import React from "react";
 import LoginSignUp from "../homepage/LoginSignUp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import gameIcon from "../../assets/game_icon.jpg";
 
 const GameModes = () => {
+  const location = useLocation();
+  // access the state sent by Auth.jsx
+  const id = location.state?.id;
   const navigate = useNavigate();
 
   const handleGameModeClick = (mode) => {
-    navigate(`/game/${mode}`);
+    navigate(`/game/${mode}/${id}`);
   };
   return (
     <div className="game-container">
