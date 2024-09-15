@@ -1,20 +1,13 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const User = require('./models/User');
-const bcrypt = require('bcryptjs');
-const app = express();
 app.use(express.json());
-app.use(cors({
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    headers: {
-        "Access-Control-Allow-Origin": "*"
+app.use(cors(
+    {
+        origin: ["http://localhost:3000"],
+        origin: ["https://memory-game-sooty-ten.vercel.app"],
+        credentials: true
     }
-}));
-
+));
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://17122000abhinav:1234@cluster0.qm6a1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
-
 // User Registration
 app.post('/api/signup', async (req, res) => {
     const { name, email, password } = req.body;
@@ -28,19 +21,16 @@ app.post('/api/signup', async (req, res) => {
         } else {
             return res.status(400).json({ error: 'User Already Registered' });
         }
-
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
-
 // User Login
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ error: 'User not found' });
-
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
         res.status(200).json({ success: 'User Logged in Successfully', user: user });
@@ -48,7 +38,6 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 // Update User High Score
 app.patch('/hiscore', async (req, res) => {
     try {
@@ -90,18 +79,13 @@ app.get('/leaderboard', async (req, res) => {
             .sort({ highScore: -1 }) // Sort by highScore in descending order
             .limit(10)
             .select('name highScore');
-
         res.json(topUsers);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server Error' });
     }
 });
-
-
 // Start server
 app.listen(5000, () => {
-    console.log('Server running on https://memory-game-shram.vercel.app/');
+    console.log('Server running on http://localhost:5000');
 });
-
-
