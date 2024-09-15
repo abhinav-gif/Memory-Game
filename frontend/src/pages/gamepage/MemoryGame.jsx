@@ -65,8 +65,9 @@ const MemoryGame = () => {
   const [score, setScore] = useState(0);
   const [hiscore, setHiScore] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
-
   const [timer, setTimer] = useState(60);
+  const [scoreChange, setScoreChange] = useState(null);
+  const [scoreChangePosition, setScoreChangePosition] = useState("");
 
   const scoreRef = useRef(score);
   const idRef = useRef(id);
@@ -103,6 +104,20 @@ const MemoryGame = () => {
       return () => clearInterval(timerInterval);
     }
   }, [gameStarted, timer, flashed]);
+
+  useEffect(() => {
+    if (scoreChange) {
+      const randomPosition = Math.random() > 0.5 ? "left" : "right";
+      setScoreChangePosition(randomPosition);
+
+      const timer = setTimeout(() => {
+        setScoreChange(null); // Hide after 1 second
+        setScoreChangePosition(""); // Reset position
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [scoreChange]);
 
   // update refrence variables
   useEffect(() => {
@@ -173,8 +188,10 @@ const MemoryGame = () => {
       setCards(updated_cards);
       if (mode === "beginner") {
         setScore(score + 5);
+        setScoreChange(`+5`);
       } else {
         setScore(score + 10);
+        setScoreChange(`+10`);
       }
 
       // Check if all cards are matched
@@ -189,6 +206,7 @@ const MemoryGame = () => {
     } else if (matchValue["originIndx"] === -1) {
       // FOR THE 1ST PICK
       setMatchValue({ originIndx: match_indx, prevFlippedIndx: index });
+      setScoreChange(null);
     } else {
       // WRONG MATCH
       setTimeout(() => {
@@ -198,20 +216,22 @@ const MemoryGame = () => {
         setCards(updated_cards);
         setCountSelected(0);
         setMatchValue({ originIndx: -1, prevFlippedIndx: -1 });
-        if (mode === "pro") {
-          if (score - 5 >= 0) {
-            setScore(score - 5);
-          } else {
-            setScore(0);
-          }
-        } else if (mode === "prodigy") {
-          if (score - 10 >= 0) {
-            setScore(score - 10);
-          } else {
-            setScore(0);
-          }
-        }
       }, 1000);
+      if (mode === "pro") {
+        if (score - 5 >= 0) {
+          setScore(score - 5);
+          setScoreChange(`-5`);
+        } else {
+          setScore(0);
+        }
+      } else if (mode === "prodigy") {
+        if (score - 10 >= 0) {
+          setScore(score - 10);
+          setScoreChange(`-10`);
+        } else {
+          setScore(0);
+        }
+      }
     }
   };
 
@@ -222,11 +242,13 @@ const MemoryGame = () => {
     setGameStarted(true);
     setScore(0);
     setTimer(60);
+    setScoreChange(null);
   };
 
   const handleQuitGame = () => {
     setTimer("Timed Out!!");
     setGameStarted(false);
+    setScoreChange(null);
   };
 
   const navigate = useNavigate();
@@ -247,6 +269,16 @@ const MemoryGame = () => {
         {gameStarted && <button onClick={handleQuitGame}>Quit Game</button>}
       </div>
       <Scores score={score} timer={timer} hiscore={hiscore} />
+      {scoreChange && (
+        <div
+          className={`score-change ${
+            scoreChange.includes("-") ? "negative" : ""
+          }`}
+          style={{ [scoreChangePosition]: "10%" }} // Dynamically set left or right
+        >
+          {scoreChange}
+        </div>
+      )}
       <div className="grid">
         {cards.map((card, index) => (
           <div

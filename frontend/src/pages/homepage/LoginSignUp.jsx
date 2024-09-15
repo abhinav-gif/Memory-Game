@@ -43,7 +43,7 @@ function LoginSignUp() {
         </>
       ) : (
         <>
-          <p>Hello {username}!</p>
+          <h2>Hello {username}!</h2>
           <button
             className="logout-btn"
             onClick={() => handleUserClick("logout")}

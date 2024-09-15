@@ -160,3 +160,45 @@ button:hover {
     height: 90px;
   }
 }
+
+.score-change {
+  position: absolute;
+  top: 20px;
+  left: 10%;
+  animation: popFade 1s ease-out forwards;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 10;
+  color: green;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px 15px;
+  border-radius: 10px;
+  width: auto;
+  max-width: 150px;
+}
+
+/* Red color for negative score */
+.score-change.negative {
+  color: red;
+}
+
+@media screen and (max-width: 600px) {
+  .score-change {
+    font-size: 1.5rem;
+    top: 10px;
+  }
+}
+
+@keyframes popFade {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) translateX(50px);
+  }
+}

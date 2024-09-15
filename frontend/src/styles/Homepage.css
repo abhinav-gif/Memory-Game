@@ -1,5 +1,6 @@
 .homepage {
   text-align: center;
+  padding: 20px;
 }
 
 .login-signup {
@@ -7,6 +8,7 @@
   justify-content: space-around;
   width: 100%;
   padding: 20px;
+  align-items: center;
 }
 
 .login-signup button {
@@ -23,6 +25,7 @@
   letter-spacing: 2px;
 }
 
+/* Responsive Main Content */
 .main-content {
   display: flex;
   justify-content: center;
@@ -33,6 +36,16 @@
   align-items: center;
 }
 
+/* For smaller screens, stack vertically */
+@media screen and (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+    gap: 2rem;
+    height: auto;
+  }
+}
+
+/* Game Container and Leaderboard Styling */
 .game-container,
 .leaderboard {
   width: 30%;
@@ -45,18 +58,57 @@
   align-items: center;
   height: 65%;
 }
+
+/* Stack game modes and leaderboard in column on small screens */
+@media screen and (max-width: 900px) {
+  .game-container,
+  .leaderboard {
+    width: 90%;
+    height: auto;
+  }
+}
+
+/* Leaderboard Styling */
+.leaderboard h1 {
+  font-family: "Jersey 20", sans-serif;
+  width: 100%;
+  padding-left: 2.5rem;
+}
+
+/* Responsive Leaderboard Container */
+.leaderboard-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .leaderboard-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.leaderboard-column {
+  flex: 1;
+  text-align: left;
+}
+
+.high-score {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+/* Game Modes Styling */
 .game-modes {
   display: flex;
   height: 80%;
   gap: 25px;
 }
 
-.game-modes h1,
-.leaderboard h1 {
-  font-family: "Jersey 20", sans-serif;
-  width: 100%;
-  padding-left: 2.5rem;
-}
 .game-modes h1 {
   display: flex;
   flex-direction: column;
@@ -66,6 +118,7 @@
   padding: 10px;
   font-size: 48px;
 }
+
 .game-modes .btn {
   color: white;
   padding: 10px 20px;
@@ -86,9 +139,66 @@
   padding: 10px;
 }
 
+.login-signup h2 {
+  font-family: "Jersey 20", sans-serif;
+  height: 100%;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  padding-top: 0;
+}
+
+/* Game Icon */
 #game-icon {
   width: 100%;
   max-width: 300px;
   margin-top: 20%;
   margin-bottom: 20%;
+}
+
+/* Adjust game icon size for small screens */
+@media screen and (max-width: 900px) {
+  #game-icon {
+    max-width: 200px;
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 480px) {
+  .login-signup {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .login-signup button {
+    width: 80%;
+    max-width: 300px;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  .main-content {
+    padding: 10px;
+    gap: 1rem;
+  }
+
+  .game-modes h1 {
+    font-size: 36px;
+  }
+
+  .leaderboard h1 {
+    padding-left: 1rem;
+  }
+
+  .leaderboard-container {
+    gap: 5px;
+  }
+
+  .high-score {
+    font-size: 0.8rem;
+  }
 }
