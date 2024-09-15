@@ -5,12 +5,12 @@ const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.json());
-app.use(cors(
-    {
-        origin: ["https://memory-game-sooty-ten.vercel.app"],
-        credentials: true
+app.use(cors({
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    headers: {
+        "Access-Control-Allow-Origin": "*"
     }
-));
+}));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://17122000abhinav:1234@cluster0.qm6a1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -43,7 +43,6 @@ app.post('/api/login', async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
-
         res.status(200).json({ success: 'User Logged in Successfully', user: user });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -51,26 +50,39 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Update User High Score
-// app.patch('/api/user/:id/highscore', async (req, res) => {
-//     const { id } = req.params;
-//     const { highScore } = req.body;
+app.patch('/hiscore', async (req, res) => {
+    try {
+        const { id, score } = req.body;
+        if (id !== 'undefined') {
+            const user = await User.findById(id);
+            if (!user) return res.status(404).json({ error: 'User not found' });
 
-//     try {
-//         const user = await User.findById(id);
-//         if (!user) return res.status(404).json({ error: 'User not found' });
+            if (score > user.highScore) {
+                user.highScore = score;
+                await user.save();
+                res.json({ message: 'High score updated successfully', flag: true });
+            } else {
+                res.json({ message: 'No update needed; current score is higher' });
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server Error' })
+    }
+})
 
-//         if (highScore > user.highScore) {
-//             user.highScore = highScore;
-//             await user.save();
-//             res.json({ message: 'High score updated successfully', user });
-//         } else {
-//             res.json({ message: 'No update needed; current score is higher' });
-//         }
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// });
-
+app.get('/hiscore', async (req, res) => {
+    try {
+        const id = req.query.id;
+        if (id !== 'undefined') {
+            const user = await User.findById(id)
+            res.json(user.highScore);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+})
 
 app.get('/leaderboard', async (req, res) => {
     try {
@@ -89,7 +101,7 @@ app.get('/leaderboard', async (req, res) => {
 
 // Start server
 app.listen(5000, () => {
-    console.log('Server running on http://localhost:5000');
+    console.log('Server running on https://memory-game-shram.vercel.app/');
 });
 
 
