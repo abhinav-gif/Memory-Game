@@ -42,7 +42,8 @@ const Auth = () => {
           password: formData.password,
         });
         const username = res.data.user.name;
-        navigate("/", { state: { username: username } });
+        const id = res.data.user._id;
+        navigate("/", { state: { username: username, id: id } });
       }
     } catch (error) {
       console.error(error.response?.data?.error || error.message);

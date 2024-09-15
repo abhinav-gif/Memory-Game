@@ -70,7 +70,7 @@ const MemoryGame = () => {
 
   const scoreRef = useRef(score);
   const idRef = useRef(id);
-
+  const [username, setUserName] = useState("");
   // fetch high score
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -78,7 +78,8 @@ const MemoryGame = () => {
         const res = await axios.get(`${apiEndpoint}/hiscore`, {
           params: { id: idRef.current },
         });
-        setHiScore(res.data);
+        setUserName(res.data.name);
+        setHiScore(res.data.hiscore);
       } catch (error) {
         console.error("Error fetching Hi Score:", error);
       }
@@ -170,7 +171,11 @@ const MemoryGame = () => {
       updated_cards[index].isMatched = true;
       updated_cards[matchValue["prevFlippedIndx"]].isMatched = true;
       setCards(updated_cards);
-      setScore(score + 10);
+      if (mode === "beginner") {
+        setScore(score + 5);
+      } else {
+        setScore(score + 10);
+      }
 
       // Check if all cards are matched
       if (updated_cards.every((card) => card.isMatched)) {
@@ -230,7 +235,13 @@ const MemoryGame = () => {
     <div className="game">
       {showConfetti && <Confetti />}
       <div className="button-row">
-        <button onClick={() => navigate(`/`)}>Main Menu</button>
+        <button
+          onClick={() =>
+            navigate(`/`, { state: { username: username, id: id } })
+          }
+        >
+          Main Menu
+        </button>
         <img src={gameIcon} alt="game icon" />
         {!gameStarted && <button onClick={handleStartGame}>Start Game</button>}
         {gameStarted && <button onClick={handleQuitGame}>Quit Game</button>}

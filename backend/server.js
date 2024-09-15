@@ -6,9 +6,9 @@ const bcrypt = require('bcryptjs');
 const app = express();
 app.use(express.json());
 app.use(cors({
-     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-     origin: ["https://memory-game-sooty-ten.vercel.app"],
-     credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    origin: ["https://memory-game-sooty-ten.vercel.app"],
+    credentials: true
 }));
 
 // Connect to MongoDB
@@ -75,7 +75,7 @@ app.get('/hiscore', async (req, res) => {
         const id = req.query.id;
         if (id !== 'undefined') {
             const user = await User.findById(id)
-            res.json(user.highScore);
+            res.json(user);
         }
     } catch (err) {
         console.log(err);

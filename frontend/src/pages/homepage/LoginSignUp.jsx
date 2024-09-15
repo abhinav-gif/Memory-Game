@@ -6,6 +6,7 @@ function LoginSignUp() {
   const handleUserClick = (user) => {
     if (user === "logout") {
       setIsUser(false);
+      navigate("/");
     } else {
       // send login/signup info to auth page
       navigate(`/authentication/${user}`);
